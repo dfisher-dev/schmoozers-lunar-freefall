@@ -43,10 +43,3 @@ cursor.execute('''
 # Commit the table and close it
 conn.commit()
 conn.close()
-
-'''Consider total time, altitude, mass, velocity, 
-time and time passed, time Impact
-
-Going to need a database manager and connector as well
-
-Need to meet with everyone in or to integrate the backend properly'''
