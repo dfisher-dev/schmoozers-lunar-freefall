@@ -43,3 +43,4 @@ cursor.execute('''
 # Commit the table and close it
 conn.commit()
 conn.close()
+
