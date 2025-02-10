@@ -24,7 +24,6 @@ cursor.execute('''
 # Commits the table to the database before moving to the next one
 conn.commit()
 
-# Table to store values during the mission
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS mission_data (
         data_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,7 +39,22 @@ cursor.execute('''
     );
 ''')
 
-# Commit the table and close it
+conn.commit()
+
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS mission_outputs (
+        output_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        mission_id INTEGER,
+        success BOOLEAN,
+        final_velocity REAL,
+        final_altitude REAL,
+        fuel_used REAL,
+        landing_time REAL,
+        remarks TEXT,
+        FOREIGN KEY (mission_id) REFERENCES mission_start (mission_id)
+    );
+''')
+
 conn.commit()
 conn.close()
 
