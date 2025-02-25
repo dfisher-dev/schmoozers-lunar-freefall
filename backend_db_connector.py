@@ -7,43 +7,43 @@ class DatabaseConnector:
         self.cursor = None
 
     def connect(self):
-        """Establish a connection to the SQLite database."""
+        # Establishes connection to database
         self.conn = sqlite3.connect(self.backend_db)
         self.cursor = self.conn.cursor()
-        print("Database connection established.")
+        print("Database connection established")
 
     def close(self):
-        """Close the database connection."""
+        # Closes database connection
         if self.conn:
             self.conn.close()
-            print("Database connection closed.")
+            print("Database connection closed")
 
     def commit(self):
-        """Commit the current transaction."""
+        # Commit changes
         if self.conn:
             self.conn.commit()
-            print("Changes committed to the database.")
+            print("Changes committed to the database")
 
     def execute_query(self, query, params=()):
-        """Execute a given SQL query with optional parameters."""
+        # Run a query with parameters
         if self.cursor:
             self.cursor.execute(query, params)
             print(f"Executed query: {query}")
 
     def fetchall(self):
-        """Fetch all rows from the last executed query."""
+        # Fetch every row from the last query
         if self.cursor:
             return self.cursor.fetchall()
 
     def fetchone(self):
-        """Fetch one row from the last executed query."""
+        # Fetch a row from the last query
         if self.cursor:
             return self.cursor.fetchone()
 
 # Example usage:
-# db = DatabaseConnector()
-# db.connect()
-# db.execute_query("SELECT * FROM mission_start")
-# results = db.fetchall()
-# print(results)
-# db.close()
+db = DatabaseConnector()
+db.connect()
+db.execute_query("SELECT * FROM mission_start")
+results = db.fetchall()
+print(results)
+db.close()
