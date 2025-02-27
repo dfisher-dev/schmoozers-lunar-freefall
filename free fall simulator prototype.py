@@ -30,4 +30,29 @@ while position>0:
   print("Velocity: ", v)
 
 
+initialHeight = h
+initialVelocity = 0
+timeIncrement = 1
+thrust = 1000
+previousLanderMass = 3000
+moonRadius = 1740000
 
+# Update statistics
+def updateStats():
+  currentHeight = initialHeight
+  previousVelocity = initialVelocity
+  while (currentHeight > 0):
+    # gravitational acceleration of lander relative to height (h) of lander
+    gravAccelAtCurrentHeight = (G*M)/(moonRadius+currentHeight)^2
+    
+    # net average acceleration at time (t)
+    currentNetAvgAccel = (thrust - gravAccelAtCurrentHeight*previousLanderMass)/(previousLanderMass-(0.5)*currentFuelMass)
+    
+    velocity = previousVelocity + currentNetAvgAccel*timeIncrement
+    
+    previousFuelMass = fuelMass
+    previousVelocity = velocity
+
+def updateWithThrusters():
+  currentAcceleration = (thrustForce - gravAccelAtCurrentHeight * previousLanderMass - (0.5) * massOfFuel)
+  heightAfterThrust = previousHeight - previousVelocity * timeIncrement - (0.5) * currentAcceleration * timeIncrement^2
