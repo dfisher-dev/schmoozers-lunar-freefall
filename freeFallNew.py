@@ -2,13 +2,14 @@ import math
 import time 
 import os
 
-h = int(input("How high is the lander form lunar surface (meters)?\n"))
-print("starting position: ", h) 
+height = int(input("How high is the lander form lunar surface (meters)?\n"))
+print("starting position: ", height) 
 
 #Need a system for evaluting graviational acceleration 
-G = (6.67428e-11)       #grav constant
+#G = (6.67428e-11)       #grav constant
+G = (1.625)
 M = (7.34767309e22)     #mass of moon in kg
-distance = h + 1737400 #point to point for 
+distance = height + 1737400 #point to point for 
 g = -(G*M)/(distance*distance)
 
 engineOn = False
@@ -35,8 +36,15 @@ def newUpdateStats():
   global fuelMassConsumed
   global fuelIncrement
   global timeIncrement
-  
+  global height
+
   upwardAcceleration = thrust / landerMassAmount
+
+  #height calculations
+  if (engineOn == True) and (fuelRemaining != 0):
+    height = height + velocity * timeIncrement - ((upwardAcceleration - G) * (timeIncrement ^ 2)) / 2
+  else:
+    height = height + velocity * timeIncrement - (G * (timeIncrement ^ 2)) / 2
 
   #velocity calculations
   if (engineOn == True) and (fuelRemaining != 0):
@@ -44,8 +52,11 @@ def newUpdateStats():
     landerMass = landerMass - fuelMassConsumed
   else:
     velocity = velocity - G * timeIncrement
+
+  #other calculations
+  if (engineOn == True) and (fuelRemaining != 0):
+    fuelRemaining = fuelRemaining - (fuelIncrement * timeIncrement)
   
-  fuelRemaining = fuelRemaining - (fuelIncrement * timeIncrement)
   timeElapsed = timeElapsed + timeIncrement
 
 
@@ -56,4 +67,5 @@ while (loops != 101):
   print(fuelRemaining)
   print(timeElapsed)
   print(landerMassAmount)
+  print(height)
   loops = loops + 1
