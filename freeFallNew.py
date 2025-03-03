@@ -16,8 +16,8 @@ engineOn = False
 fuelConsumptionRate = 1
 velocity = 0
 previousVelocity = 0
-landerMassAmount = 1000
-thrust = 1000
+landerMass = 1000
+thrust = 3820
 timeElapsed = 0
 fuelRemaining = 3000
 fuelMassConsumed = 10
@@ -29,7 +29,7 @@ def newUpdateStats():
   global fuelConsumptionRate
   global velocity
   global previousVelocity
-  global landerMassAmount
+  global landerMass
   global thrust
   global timeElapsed
   global fuelRemaining
@@ -37,35 +37,35 @@ def newUpdateStats():
   global fuelIncrement
   global timeIncrement
   global height
+  global landerMass
 
-  upwardAcceleration = thrust / landerMassAmount
+  upwardAcceleration = thrust / landerMass
 
-  #height calculations
+  #height and velocity calculations
   if (engineOn == True) and (fuelRemaining != 0):
     height = height + velocity * timeIncrement - ((upwardAcceleration - G) * (timeIncrement ^ 2)) / 2
-  else:
-    height = height + velocity * timeIncrement - (G * (timeIncrement ^ 2)) / 2
-
-  #velocity calculations
-  if (engineOn == True) and (fuelRemaining != 0):
     velocity = velocity + (upwardAcceleration - G) * timeIncrement
+
+    fuelRemaining = fuelRemaining - (fuelIncrement * timeIncrement)
     landerMass = landerMass - fuelMassConsumed
   else:
+    height = height + velocity * timeIncrement - (G * (timeIncrement ^ 2)) / 2
     velocity = velocity - G * timeIncrement
 
-  #other calculations
-  if (engineOn == True) and (fuelRemaining != 0):
-    fuelRemaining = fuelRemaining - (fuelIncrement * timeIncrement)
-  
   timeElapsed = timeElapsed + timeIncrement
+  if (height <= 0):
+    print("Lander has landed")
 
+
+engineOn = True
 
 loops = 0
-while (loops != 101):
+while (loops != 300 and height > 0):
   newUpdateStats()
   print(velocity)
   print(fuelRemaining)
   print(timeElapsed)
-  print(landerMassAmount)
+  print(landerMass)
   print(height)
+  print("-----")
   loops = loops + 1
