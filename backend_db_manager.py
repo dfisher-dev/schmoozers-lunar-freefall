@@ -1,4 +1,5 @@
 from backend_db_connector import DatabaseConnector
+import freeFallNew
 
 class DatabaseManager:
     def __init__(self, backend_db='backend.db'):
