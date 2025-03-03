@@ -19,15 +19,75 @@ seconds = time.time()
 
 position = h
 #all the while loop does is replace the console with the most up to date number, not permanant 
-while position>0:
-  elapsed_time = time.time() - seconds
-  v0 = 0#initial velocity is zero
-  v = v0 + g*elapsed_time
-  position = h + v0*(elapsed_time) + (g*(elapsed_time)*(elapsed_time))/2
-  os.system('clear')
+# while position>0:
+#   elapsed_time = time.time() - seconds
+#   v0 = 0#initial velocity is zero
+#   v = v0 + g*elapsed_time
+#   position = h + v0*(elapsed_time) + (g*(elapsed_time)*(elapsed_time))/2
+#   os.system('clear')
   
-  print("Position: ", position)
-  print("Velocity: ", v)
+#   print("Position: ", position)
+#   print("Velocity: ", v)
 
 
+initialHeight = h
+initialVelocity = 0
+timeIncrement = 1
+thrust = 1000
+previousLanderMass = 3000
+moonRadius = 1740000
 
+# Update statistics
+def updateStats():
+  currentHeight = initialHeight
+  previousVelocity = initialVelocity
+  while (currentHeight > 0):
+    # gravitational acceleration of lander relative to height (h) of lander
+    gravAccelAtCurrentHeight = (G*M)/(moonRadius+currentHeight)^2
+    
+    # net average acceleration at time (t)
+    currentNetAvgAccel = (thrust - gravAccelAtCurrentHeight*previousLanderMass)/(previousLanderMass-(0.5)*currentFuelMass)
+    
+    velocity = previousVelocity + currentNetAvgAccel*timeIncrement
+    
+    previousFuelMass = fuelMass
+    previousVelocity = velocity
+
+def updateWithThrusters():
+  currentAcceleration = (thrustForce - gravAccelAtCurrentHeight * previousLanderMass - (0.5) * massOfFuel)
+  heightAfterThrust = previousHeight - previousVelocity * timeIncrement - (0.5) * currentAcceleration * timeIncrement^2
+
+
+engineOn = False
+fuelConsumptionRate = 1
+velocity = 0
+previousVelocity = 0
+landerMass = 3000
+thrust = 1000
+timeElapsed = 0
+fuelRemaining = 3000
+fuelMassConsumed = 10
+fuelIncrement = 100
+
+def newUpdateStats():
+
+  upwardAcceleration = thrust / landerMass
+
+  #velocity calculations
+  if (engineOn == True) and (fuelRemaining != 0):
+    velocity = velocity + (upwardAcceleration - G) * timeIncrement
+    landerMass = landerMass - fuelMassConsumed
+  else:
+    velocity = velocity - G * timeIncrement
+  
+  fuel = fuel - (fuelIncrement * timeIncrement)
+  timeElapsed = timeElapsed + timeIncrement
+
+
+loops = 0
+while (loops != 11):
+  newUpdateStats()
+  print("Velocity: " + velocity)
+  print("Fuel: " + fuelRemaining)
+  print("TimeElapsed: " + timeElapsed)
+  print("LanderMass: " + landerMass)
