@@ -12,11 +12,17 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS mission_start(
         total_time REAL,
         time_start REAL,
         time_passed REAL,
-        mass REAL,
-        velocity REAL,    
+        timeElapsed REAL,
+        landerMass REAL,
+        velocity REAL,
+        previousVelocity REAL,    
         altitude REAL,
         start_fuel REAL,
-        thrust_power REAL,
+        fuelRemaining REAL,
+        fuelMassConsumed REAL,
+        fuelIncrement REAL,   
+        thrust REAL,
+        timeIncrement INTEGER AUTOINCREMENT,
         gravity REAL DEFAULT 1.62
     )''')
 
@@ -28,11 +34,16 @@ cursor.execute('''
         data_id INTEGER PRIMARY KEY AUTOINCREMENT,
         mission_id INTEGER,
         time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        timeElapsed REAL,
+        landerMass
         altitude REAL,
-        fuel_remaining REAL,
+        fuelRemaining REAL,
+        fuelMassConsumed REAL,
+        fuelIncrement REAL,
         velocity REAL,
+        previousVelocity REAL,
         mass REAL,
-        thrust_power REAL,
+        thrust REAL,
         position REAL,
         FOREIGN KEY (mission_id) REFERENCES mission_start (mission_id)
     )''')
