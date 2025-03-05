@@ -44,7 +44,7 @@ class DatabaseConnector:
 # Example usage:
 db = DatabaseConnector()
 db.connect()
-db.execute_query("SELECT * FROM mission_start")
+db.execute_query("SELECT thrust FROM mission_start")
 results = db.fetchall()
 print(results)
 db.close()

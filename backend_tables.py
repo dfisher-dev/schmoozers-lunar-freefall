@@ -9,20 +9,15 @@ cursor = conn.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS mission_start(
         mission_id INTEGER PRIMARY KEY AUTOINCREMENT,
         time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        total_time REAL,
-        time_start REAL,
-        time_passed REAL,
-        timeElapsed REAL,
-        landerMass REAL,
         velocity REAL,
-        previousVelocity REAL,    
-        altitude REAL,
-        start_fuel REAL,
+        previousVelocity REAL,
+        landerMass REAL,
+        thrust REAL,
+        timeElapsed REAL,
         fuelRemaining REAL,
         fuelMassConsumed REAL,
-        fuelIncrement REAL,   
-        thrust REAL,
-        timeIncrement INTEGER AUTOINCREMENT,
+        fuelIncrement REAL,
+        timeIncrement REAL,
         gravity REAL DEFAULT 1.62
     )''')
 
@@ -34,17 +29,15 @@ cursor.execute('''
         data_id INTEGER PRIMARY KEY AUTOINCREMENT,
         mission_id INTEGER,
         time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        velocity REAL,
+        previousVelocity REAL,
+        landerMass REAL,
+        thrust REAL,
         timeElapsed REAL,
-        landerMass
-        altitude REAL,
         fuelRemaining REAL,
         fuelMassConsumed REAL,
         fuelIncrement REAL,
-        velocity REAL,
-        previousVelocity REAL,
-        mass REAL,
-        thrust REAL,
-        position REAL,
+        timeIncrement REAL,
         FOREIGN KEY (mission_id) REFERENCES mission_start (mission_id)
     )''')
 
@@ -64,11 +57,5 @@ cursor.execute('''
     )''')
 
 conn.commit()
-
-cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-
-tables = cursor.fetchall()
-print("Tables in the database:", tables)
-
 conn.close()
 
