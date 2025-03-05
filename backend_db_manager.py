@@ -1,4 +1,4 @@
-from backend_db_connector import DatabaseConnector
+from database_connector import DatabaseConnector
 import freeFallNew
 
 class DatabaseManager:
@@ -36,6 +36,7 @@ class DatabaseManager:
         # Close database connection
         self.db.close()
 
+"""
 manager = DatabaseManager()
 
 # Create a new mission (with example values)
@@ -47,3 +48,4 @@ print(mission_data)  # Print the result of get_mission_data
 
 # Close connection
 manager.close_connection()
+"""

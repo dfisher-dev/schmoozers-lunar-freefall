@@ -1,26 +1,40 @@
+from database_connector import get_mission_data
+from database_connector import DatabaseConnector
 import math 
 import time 
 import os
 
-height = int(input("How high is the lander form lunar surface (meters)?\n"))
-print("starting position: ", height) 
+mission = get_mission_data()
+
+if mission:
+  velocity = mission["velocity"]
+  landerMass = mission["landerMass"]
+  thrust = mission["thrust"]
+  fuelRemaining = mission["fuelRemaining"]
+  altitude = mission["altitude"]
+
+  print("Mission Data Retrieved:")
+  print(f"Velocity: {velocity}")
+  print(f"Lander Mass: {landerMass}")
+  print(f"Thrust: {thrust}")
+  print(f"Fuel Remaining: {fuelRemaining}")
+  print(f"Altitude: {altitude}")
+
+else:
+  print("Error: No mission data available")
+  exit()
 
 #Need a system for evaluting graviational acceleration 
 #G = (6.67428e-11)       #grav constant
 G = (1.625)
 M = (7.34767309e22)     #mass of moon in kg
-distance = height + 1737400 #point to point for 
+
+distance = altitude + 1737400 #point to point for 
 g = -(G*M)/(distance*distance)
 
 engineOn = False
 fuelConsumptionRate = 1
-velocity = 0
 previousVelocity = 0
-landerMass = 1000
-thrust = 3820
-timeElapsed = 0
-fuelRemaining = 3000
-fuelMassConsumed = 10
 fuelIncrement = 100
 timeIncrement = 1
 
@@ -36,36 +50,60 @@ def newUpdateStats():
   global fuelMassConsumed
   global fuelIncrement
   global timeIncrement
-  global height
+  global altitude
   global landerMass
 
   upwardAcceleration = thrust / landerMass
 
-  #height and velocity calculations
+  #altitude and velocity calculations
   if (engineOn == True) and (fuelRemaining != 0):
-    height = height + velocity * timeIncrement - ((upwardAcceleration - G) * (timeIncrement ^ 2)) / 2
+    altitude = altitude + velocity * timeIncrement - ((upwardAcceleration - G) * (timeIncrement ^ 2)) / 2
     velocity = velocity + (upwardAcceleration - G) * timeIncrement
 
     fuelRemaining = fuelRemaining - (fuelIncrement * timeIncrement)
     landerMass = landerMass - fuelMassConsumed
   else:
-    height = height + velocity * timeIncrement - (G * (timeIncrement ^ 2)) / 2
+    altitude = altitude + velocity * timeIncrement - (G * (timeIncrement ^ 2)) / 2
     velocity = velocity - G * timeIncrement
 
   timeElapsed = timeElapsed + timeIncrement
-  if (height <= 0):
-    print("Lander has landed")
+  if (altitude <= 0):
+    print("Lander has landed\n")
 
 
 engineOn = True
 
 loops = 0
-while (loops != 300 and height > 0):
+while (loops and altitude > 0):
   newUpdateStats()
   print(velocity)
   print(fuelRemaining)
   print(timeElapsed)
   print(landerMass)
-  print(height)
+  print(altitude)
   print("-----")
   loops = loops + 1
+
+def create_new_mission(fuelRemaining=500.0, thrust=75.0, velocity=0.0):
+  db = DatabaseConnector()
+  db.connect()
+
+  # Insert mission data into the mission_start table
+  query = '''
+  INSERT INTO mission_start (mass, altitude, start_fuel, thrust, velocity, landerMass, fuelRemaining)
+  VALUES (?, ?, ?, ?, ?, ?, ?)'''
+    
+  # Assume altitude, fuel, and other values are set when creating the mission
+  altitude = float(input("Starting height?\n"))
+  landerMass = float(input("Mass of the schmoozer (kg's)?\n"))
+  start_fuel = float(input("Starting amount of fuel?\n"))
+  db.execute_query(query, (landerMass, altitude, start_fuel, thrust, velocity, landerMass, start_fuel))
+
+  db.commit()
+  db.close()
+  print("Mission created\n")
+
+# Example usage:
+create_new_mission()  # Set lander mass from user input
+
+get_mission_data()
