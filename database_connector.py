@@ -54,15 +54,6 @@ def get_mission_data():
   print("database connection closed\n")
 
   if mission_data:
-    # Print the mission data with line breaks
-    print("Mission Data Retrieved:\n")
-    print(f"\nMass: {mission_data[0]}")
-    print(f"\nAltitude: {mission_data[1]}")
-    print(f"\nStarting Fuel: {mission_data[2]}")
-    print(f"\nThrust: {mission_data[3]}")
-    print(f"\nVelocity: {mission_data[4]}")
-    print(f"\nLander Mass: {mission_data[5]}")
-    print(f"\nFuel Remaining: {mission_data[6]}")
     return {
       "mass": mission_data[0],
       "altitude": mission_data[1],
