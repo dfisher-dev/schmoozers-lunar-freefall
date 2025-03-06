@@ -150,7 +150,7 @@ def run_mission():
     INSERT INTO mission_data (time_stamp, altitude, fuel_remaining, mass, velocity, thrust_power)
     VALUES (?, ?, ?, ?, ?, ?)'''
 
-    db.execute_query(query (timeElapsed, altitude, fuelRemaining, landerMass, velocity, thrust))
+    db.execute_query(query, (timeElapsed, altitude, fuelRemaining, landerMass, velocity, thrust))
     active_mission_data = db.fetchone()
     print(active_mission_data)
 

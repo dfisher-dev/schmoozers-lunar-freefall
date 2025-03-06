@@ -1,5 +1,5 @@
 import sqlite3
-import freeFallNew
+# import freeFallNew
 
 conn = sqlite3.connect('backend.db')
 cursor = conn.cursor()
@@ -27,13 +27,14 @@ conn.commit()
 cursor.execute('''CREATE TABLE IF NOT EXISTS mission_data(
     data_id INTEGER PRIMARY KEY AUTOINCREMENT,
     mission_id INTEGER,
-    time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    velocity REAL,
+    time_stamp INT,
+    velocity FLOAT,
     previousVelocity REAL,
-    landerMass REAL,
-    thrust REAL,
-    timeElapsed REAL,
-    fuelRemaining REAL,
+    mass INT,
+    thrust_power INT,
+    altitude FLOAT,
+    timeElapsed INTEGER,
+    fuel_remaining INT,
     fuelMassConsumed REAL,
     fuelIncrement REAL,
     timeIncrement REAL,
