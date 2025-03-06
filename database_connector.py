@@ -40,18 +40,17 @@ class DatabaseConnector:
       if self.cursor:
         return self.cursor.fetchone()
         
-def get_mission_data():
+def get_initial_mission_data():
   db = DatabaseConnector()
   db.connect()
   print("database connection successful")
 
     # Query to get latest mission data
-  query = "SELECT mass, velocity, landerMass, start_fuel, thrust, fuelRemaining, altitude FROM mission_start ORDER BY mission_id DESC LIMIT 1"
+  query = "SELECT mass, velocity, start_fuel, thrust, fuelRemaining, altitude FROM mission_start ORDER BY mission_id DESC LIMIT 1"
   db.execute_query(query)
   mission_data = db.fetchone()
 
   db.close()
-  print("database connection closed\n")
 
   if mission_data:
     return {
@@ -60,8 +59,7 @@ def get_mission_data():
       "start_fuel": mission_data[2],
       "thrust": mission_data[3],
       "velocity": mission_data[4],
-      "landerMass": mission_data[5],
-      "fuelRemaining": mission_data[6]
+      "fuelRemaining": mission_data[5]
     }
   else:
     print("No data found\n")

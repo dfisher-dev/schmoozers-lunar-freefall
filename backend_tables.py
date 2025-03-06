@@ -9,15 +9,15 @@ cursor = conn.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS mission_start(
     mission_id INTEGER PRIMARY KEY AUTOINCREMENT,
     time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    velocity REAL,
-    previousVelocity REAL,
-    landerMass REAL,
+    total_time REAL,
+    time_start REAL,
+    time_passed REAL,
+    mass REAL,
+    velocity REAL,    
+    altitude REAL,
+    start_fuel REAL,
     thrust REAL,
-    timeElapsed REAL,
     fuelRemaining REAL,
-    fuelMassConsumed REAL,
-    fuelIncrement REAL,
-    timeIncrement REAL,
     gravity REAL DEFAULT 1.62
 )''')
 
