@@ -151,12 +151,26 @@ def run_mission():
     VALUES (?, ?, ?, ?, ?, ?)'''
 
     db.execute_query(query, (timeElapsed, altitude, fuelRemaining, landerMass, velocity, thrust))
+    db.commit()
     active_mission_data = db.fetchone()
     print(active_mission_data)
 
   db.close()
   print("database connection closed\n")
 
+def get_mission_data():
+  db = DatabaseConnector()
+  db.connect()
+  print("database connection successful")
+
+  query = '''
+    SELECT * FROM mission_data'''
+  db.execute_query(query)
+  result = db.cursor.fetchall()
+  print(result)
+  
+
 #get_initial_mission_data()
 run_mission()
+get_mission_data()
 #create_new_mission()  # Set lander mass from user input
