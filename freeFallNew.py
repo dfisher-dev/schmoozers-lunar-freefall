@@ -5,28 +5,28 @@ import time
 import os
 
 
-"""
-mission = get_initial_mission_data()
+def display_initial_mission_data():
+  mission = get_initial_mission_data()
 
-if mission:
-  velocity = mission["velocity"]
-  landerMass = mission["mass"]
-  thrust = mission["thrust"]
-  fuelRemaining = mission["fuelRemaining"]
-  altitude = mission["altitude"]
+  if mission:
+    velocity = mission["velocity"]
+    landerMass = mission["mass"]
+    thrust = mission["thrust"]
+    fuelRemaining = mission["fuelRemaining"]
+    altitude = mission["altitude"]
 
-  print("Mission Data Retrieved:")
-  print(f"Velocity: {velocity}")
-  print(f"Lander Mass: {landerMass}")
-  print(f"Thrust: {thrust}")
-  print(f"Fuel Remaining: {fuelRemaining}")
-  print(f"Altitude: {altitude}")
+    print("Mission Data Retrieved:")
+    print(f"Velocity: {velocity}")
+    print(f"Lander Mass: {landerMass}")
+    print(f"Thrust: {thrust}")
+    print(f"Fuel Remaining: {fuelRemaining}")
+    print(f"Altitude: {altitude}")
 
-else:
-  print("Error: No mission data available")
-  exit()
+  else:
+    print("Error: No mission data available")
+    exit()
 
-"""
+
 
 #Need a system for evaluting graviational acceleration 
 #G = (6.67428e-11)       #grav constant
@@ -170,7 +170,7 @@ def get_mission_data():
   print(result)
   
 
-#get_initial_mission_data()
+create_new_mission()  # Set lander mass from user input
+display_initial_mission_data()
 run_mission()
 get_mission_data()
-#create_new_mission()  # Set lander mass from user input
