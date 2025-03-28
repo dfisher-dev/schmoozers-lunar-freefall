@@ -27,7 +27,7 @@ Fire_img=pygame.image.load('Fire.png')
 Fire=pygame.transform.scale(Fire_img,(200,200))
 #kaboom 
 Kaboom_img=pygame.image.load('Kaboom.png')
-Kaboom=pygame.transform.scale(Kaboom_img,(100,100))
+Kaboom=pygame.transform.scale(Kaboom_img,(250,250))
 #Setting up the ability to draw text on the screen
 text_font=pygame.font.SysFont("Arial",30)
 text_font2=pygame.font.SysFont("Arial",110,True)
