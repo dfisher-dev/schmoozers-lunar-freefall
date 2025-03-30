@@ -123,7 +123,7 @@ altitude = 1000
 fuelMassConsumed = 10
 
 
-def run_mission():
+def run_mission_increment(engineIsOn):
 
   global engineOn
   global fuelConsumptionRate
@@ -138,25 +138,27 @@ def run_mission():
   global timeIncrement
   global altitude
 
+  engineOn = engineIsOn
+
   db = DatabaseConnector()
   db.connect()
   print("database connection successful")
 
-  while (altitude > 0):
+  newUpdateStats()
 
-    newUpdateStats()
+  query = '''
+  INSERT INTO mission_data (time_stamp, altitude, fuel_remaining, mass, velocity, thrust_power)
+  VALUES (?, ?, ?, ?, ?, ?)'''
 
-    query = '''
-    INSERT INTO mission_data (time_stamp, altitude, fuel_remaining, mass, velocity, thrust_power)
-    VALUES (?, ?, ?, ?, ?, ?)'''
-
-    db.execute_query(query, (timeElapsed, altitude, fuelRemaining, landerMass, velocity, thrust))
-    db.commit()
-    active_mission_data = db.fetchone()
-    print(active_mission_data)
+  db.execute_query(query, (timeElapsed, altitude, fuelRemaining, landerMass, velocity, thrust))
+  db.commit()
+  active_mission_data = db.fetchone()
+  print(active_mission_data)
 
   db.close()
   print("database connection closed\n")
+
+  return [velocity, thrust, altitude]
 
 def get_mission_data():
   db = DatabaseConnector()
@@ -170,7 +172,7 @@ def get_mission_data():
   print(result)
   
 
-create_new_mission()  # Set lander mass from user input
-display_initial_mission_data()
-run_mission()
-get_mission_data()
+# create_new_mission()  # Set lander mass from user input
+# display_initial_mission_data()
+# run_mission_increment()
+# get_mission_data()
