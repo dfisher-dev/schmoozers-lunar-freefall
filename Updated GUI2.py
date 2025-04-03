@@ -1,6 +1,10 @@
 import pygame
 import time
 from freeFallNew import run_mission_increment
+from freeFallNew import create_new_mission
+
+
+create_new_mission()
 
 # pygame setup
 pygame.init()

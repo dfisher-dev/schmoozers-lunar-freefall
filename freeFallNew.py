@@ -88,7 +88,12 @@ while (loops and altitude > 0):
   print("-----")
   loops = loops + 1
 
-def create_new_mission(fuelRemaining=500.0, thrust=75.0, velocity=110.0):
+def create_new_mission():
+  global landerMass
+  global altitude
+  global fuelRemaining
+  
+  
   db = DatabaseConnector()
   db.connect()
  
@@ -101,12 +106,14 @@ def create_new_mission(fuelRemaining=500.0, thrust=75.0, velocity=110.0):
   altitude = float(input("Starting height?\n"))
   landerMass = float(input("Mass of the schmoozer (kg's)?\n"))
   start_fuel = float(input("Starting amount of fuel?\n"))
+  
+  fuelRemaining = start_fuel
+  
   db.execute_query(query, (landerMass, altitude, start_fuel, thrust, velocity))
 
   db.commit()
   db.close()
   print("Mission created\n")
-
 
 engineOn = True
 fuelConsumptionRate = 10
@@ -121,6 +128,7 @@ fuelConsumptionRate = 10
 timeIncrement = 1
 altitude = 1000
 fuelMassConsumed = 5
+
 
 
 def run_mission_increment(engineIsOn):
