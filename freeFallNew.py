@@ -116,11 +116,11 @@ landerMass = 1000
 thrust = 3000
 timeElapsed = 0
 fuelRemaining = 300
-fuelIncrement = 10
+fuelIncrement = 5
 fuelConsumptionRate = 10
 timeIncrement = 1
 altitude = 1000
-fuelMassConsumed = 10
+fuelMassConsumed = 5
 
 
 def run_mission_increment(engineIsOn):
@@ -158,7 +158,7 @@ def run_mission_increment(engineIsOn):
   db.close()
   print("database connection closed\n")
 
-  return [velocity, thrust, altitude]
+  return [velocity, thrust, altitude, fuelRemaining]
 
 def get_mission_data():
   db = DatabaseConnector()

@@ -1,4 +1,5 @@
 import pygame
+import time
 from freeFallNew import run_mission_increment
 
 # pygame setup
@@ -36,13 +37,13 @@ def draw_text(text,font,text_col,x,y):
     img = font.render(text,False,text_col)
     screen.blit(img,(x,y))
 #Moves the Percent sign to follow the number
-def Percent_mover():
-    if Fuel>=100:
-        draw_text("%",text_font,(0,205,100),192,445)
-    if Fuel<100 and Fuel>=10:
-        draw_text("%",text_font,(0,205,100),177,445)
-    if Fuel <10:
-        draw_text("%",text_font,(0,205,100),164,445)
+# def Percent_mover():
+#     if Fuel>=100:
+#         draw_text("%",text_font,(0,205,100),192,445)
+#     if Fuel<100 and Fuel>=10:
+#         draw_text("%",text_font,(0,205,100),177,445)
+#     if Fuel <10:
+#         draw_text("%",text_font,(0,205,100),164,445)
 #Lander Y direction
 ly=50
 #Gravity
@@ -87,19 +88,19 @@ while running:
                 Thrust=False
     if Thrust==True:
         if Fuel>0:
-            Fuel-=0.05
+            #Fuel-=0.05
             ly-=0.75
     
     
-    
+    # each loop will get the mission data, used below
     dataList = run_mission_increment(Thrust)
     velocity = dataList[0]
     thrustConstant = dataList[1]
     altitude = dataList[2]
-    
+    fuelRemaining = dataList[3]
 
-
-
+    # change Fuel to correspond to fuelRemaining
+    Fuel = fuelRemaining
 
 
 
@@ -150,7 +151,7 @@ while running:
     draw_text(str(int(time_m)),text_font,(0,205,100),160,415)
     draw_text(str(int(altitude)),text_font,(0,205,100),200,475)
     draw_text(str(int(velocity)),text_font,(0,205,100),200,505)
-    Percent_mover()
+    #Percent_mover()
     if i==-width:
        screen.blit(Moon,(width+1,j))
        i=0
@@ -161,9 +162,12 @@ while running:
        z=1
     i-=0.5
     ly+=G
-    if altitude==0:
-        if velocity>5:
+    if altitude<0:
+        if velocity<-5:
             screen.blit(Kaboom,(800,ly))
+            # time.sleep(5)
+           # break
+       # break
 
 
 
