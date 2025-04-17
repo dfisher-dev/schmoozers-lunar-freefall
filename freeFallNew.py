@@ -88,7 +88,7 @@ while (loops and altitude > 0):
   print("-----")
   loops = loops + 1
 
-def create_new_mission():
+def create_new_mission(initial_height, initial_mass, initial_fuel):
   global landerMass
   global altitude
   global fuelRemaining
@@ -103,10 +103,14 @@ def create_new_mission():
   VALUES (?, ?, ?, ?, ?)'''
     
   # Assume altitude, fuel, and other values are set when creating the mission
-  altitude = float(input("Starting height?\n"))
-  landerMass = float(input("Mass of the schmoozer (kg's)?\n"))
-  start_fuel = float(input("Starting amount of fuel?\n"))
+  # altitude = float(input("Starting height?\n"))
+  # landerMass = float(input("Mass of the schmoozer (kg's)?\n"))
+  # start_fuel = float(input("Starting amount of fuel?\n"))
   
+  altitude = initial_height
+  landerMass = initial_mass
+  start_fuel = initial_fuel
+
   fuelRemaining = start_fuel
   
   db.execute_query(query, (landerMass, altitude, start_fuel, thrust, velocity))
