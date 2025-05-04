@@ -42,7 +42,11 @@ def draw_text(text,font,text_col,x,y):
     screen.blit(img,(x,y))
 ly=50
 #Gravity
-G=0.5
+G=1
+#Terminal velocity
+tv=1
+#Thrust exponential
+te=0
 #For the screen scrolling
 i=0
 j=0
@@ -51,8 +55,8 @@ z=0
 Thrust=False
 time_s=int(0)
 time_m=int(0)
-Fuel=int(100)
 endheight=False
+
 
 running = True
 
@@ -182,7 +186,9 @@ while running:
         if Thrust==True:
             if Fuel>0:
              #Fuel-=0.05
-                ly-=0.75
+             tv-=0.05
+             te-=0.025
+             ly+=te
     
     
     # each loop will get the mission data, used below
@@ -209,11 +215,7 @@ while running:
         time_s=0 
     screen.fill((0,0,0))
 
-    if ly<100:
-        screen.blit(bg,(i,j))
-        screen.blit(bg,(width+i,j))
-        
-    if ly>100:
+    if endheight==False:
         if z==0:
             screen.blit(bg,(i,j))
             screen.blit(bg,(width+i,j))
@@ -222,8 +224,10 @@ while running:
             screen.blit(Moon,(width+i,j))
         screen.blit(Moon,(i,height+j))
         screen.blit(Moon,(width+i,height+j))
-        
-        j-=0.5
+        j-=2
+    else:
+        screen.blit(Moon,(i,j))
+        screen.blit(Moon,(width+i,j))
     screen.blit(Moon,(i,height+j))
     screen.blit(Moon,(width+i,height+j))
     screen.blit(controller,(0,360))
@@ -232,10 +236,6 @@ while running:
             if Fuel > 0:
                 screen.blit(Fire,(805,ly+25))
     screen.blit(lander,(800,ly))
-    if endheight==False:
-        if event.type==pygame.KEYDOWN:
-            if event.type==pygame.K_SPACE:
-                ly+=2
     #Display text
     draw_text("Time: ",text_font,(0,205,100),90,415)
     draw_text("Fuel: ",text_font,(0,205,100),90,445)
@@ -258,7 +258,14 @@ while running:
        z=1
     i-=0.5
     if endheight==False:
-        ly+=G
+        if tv!=G:
+            if Thrust==False:
+                if te<1:
+                    te+=0.025
+                tv+=0.05
+                ly+=tv
+        else:
+            ly+=G
     if altitude<0:
         endheight=True
         if velocity<-5:
