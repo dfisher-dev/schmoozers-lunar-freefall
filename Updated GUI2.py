@@ -60,10 +60,10 @@ Thrust=False
 time_s=int(0)
 time_m=int(0)
 endheight=False
-
-
+#Crash boolean
+Crash=False
 running = True
-
+endMenu = False
 Start=True
 dt = 0
 Frames=0
@@ -73,6 +73,7 @@ user_ip=""
 user_ip2=""
 user_ip3=""
 continue_button=pygame.Rect(500,600,280,32)
+exit_button=pygame.Rect(500,600,280,32)
 input_rect=pygame.Rect(570,320,140,32)
 input_rect2=pygame.Rect(570,420,140,32)
 input_rect3=pygame.Rect(570,520,140,32)
@@ -150,9 +151,9 @@ while Start:
     draw_text("Lander ",text_font3,(0,100,0),610,50)
     draw_text("Lunar Lander",text_font2,(0,205,100),350,50)
     screen.blit(MENU,(375,200))
-    draw_text("Height:",text_font4,(0,0,0),570,260)
-    draw_text("Mass: ",text_font4,(0,0,0),570,360)
-    draw_text("Fuel: ",text_font4,(0,0,0),570,460)
+    draw_text("Height:",text_font4,(0,100,0),570,260)
+    draw_text("Mass: ",text_font4,(0,100,0),570,360)
+    draw_text("Fuel: ",text_font4,(0,100,0),570,460)
     pygame.draw.rect(screen,(color),input_rect,)
     pygame.draw.rect(screen,(color2),input_rect2,)
     pygame.draw.rect(screen,(color3),input_rect3,)
@@ -172,7 +173,7 @@ while Start:
 
 create_new_mission(initial_height, initial_mass, initial_fuel)
 
-
+#------------------------------------------------Mission Code
 while running:
     clock.tick(15)
     # poll for events
@@ -282,12 +283,46 @@ while running:
         endheight=True
         if velocity<-5:
             screen.blit(Kaboom,(800,ly))
-            # time.sleep(5)
-           # break
-       # break
+            Crash=True
+        else:
+            Crash=False
+        draw_text("Press ENTER to Continue",text_font4,(0,100,0),400,200)
+        if event.type==pygame.KEYDOWN:
+            if event.key==pygame.K_RETURN:
+                running=False
+                endMenu=True
+    pygame.display.update()
+while endMenu:
+    clock.tick(60)
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                endMenu = False
+                if event.type==pygame.MOUSEBUTTONDOWN:
+                    if exit_button.collidepoint(event.pos):
+                        endMenu=False
 
+    screen.fill((0,0,0))
+    screen.blit(Moon,(1,1))
+    if Crash:
+        draw_text("You ",text_font3,(0,100,0),340,50)
+        draw_text("Crashed! ",text_font3,(0,100,0),510,50)
+        draw_text("You Crashed!",text_font2,(0,205,100),360,50)
+    else:
+        draw_text("You ",text_font3,(0,100,0),350,50)
+        draw_text("Landed! ",text_font3,(0,100,0),540,50)
+        draw_text("You Landed!",text_font2,(0,205,100),370,50)
+    screen.blit(MENU,(375,200))
+    draw_text("Time:",text_font4,(0,100,0),470,460)
+    draw_text(str(int(time_s))+"s",text_font4,(0,205,100),750,460)
+    draw_text(str(int(time_m))+"m",text_font4,(0,205,100),680,460)
 
+    draw_text("Velocity: ",text_font4,(0,100,0),470,260)
+    draw_text(str(int(velocity)),text_font4,(0,205,100),690,260)
+    draw_text("Fuel: ",text_font4,(0,100,0),470,360)
+    draw_text(str(int(fuelRemaining)),text_font4,(0,205,100),690,360)
+    pygame.draw.rect(screen,(144, 238, 144),exit_button,)
+    draw_text("Exit ",text_font,(0,0,0),500,600)
 
     pygame.display.update()
+
 pygame.quit()
-    
