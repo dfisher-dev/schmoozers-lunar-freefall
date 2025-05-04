@@ -74,11 +74,13 @@ user_ip2=""
 user_ip3=""
 continue_button=pygame.Rect(500,600,280,32)
 exit_button=pygame.Rect(500,600,280,32)
+check_box=pygame.Rect(450,400,32,32)
 input_rect=pygame.Rect(570,320,140,32)
 input_rect2=pygame.Rect(570,420,140,32)
 input_rect3=pygame.Rect(570,520,140,32)
 color_active=pygame.Color(0,205,100)
 color_passive=pygame.Color(0,100,0)
+check_box_active=False
 active=False
 active2=False
 active3=False
@@ -105,6 +107,11 @@ while Start:
                     active3=True
                 else:
                     active3=False
+                if check_box.collidepoint(event.pos):
+                    if check_box_active==False:
+                        check_box_active=True
+                    else:
+                        check_box_active=False
                 if continue_button.collidepoint(event.pos):
                     if user_ip.isdigit() and user_ip2.isdigit() and user_ip3.isdigit():
                         initial_height=int(user_ip)
@@ -158,6 +165,11 @@ while Start:
     pygame.draw.rect(screen,(color2),input_rect2,)
     pygame.draw.rect(screen,(color3),input_rect3,)
     pygame.draw.rect(screen,(144, 238, 144),continue_button,)
+    draw_text("AutoLander:",text_font,(0,100,0),400,350)
+    if check_box_active:
+        pygame.draw.rect(screen,(0,205,100),check_box)
+    else:
+        pygame.draw.rect(screen,(0,100,0),check_box)
     draw_text("Continue ",text_font,(0,0,0),500,600)
     screen.blit(text_surface,(input_rect))
     screen.blit(text_surface2,(input_rect2))
@@ -176,16 +188,33 @@ create_new_mission(initial_height, initial_mass, initial_fuel)
 #------------------------------------------------Mission Code
 while running:
     clock.tick(15)
+    
+    # each loop will get the mission data, used below
+    if endheight==False:
+        dataList = run_mission_increment(Thrust)
+        velocity = dataList[0]
+        thrustConstant = dataList[1]
+        altitude = dataList[2]
+        fuelRemaining = dataList[3]
+
     # poll for events
     # pygame.QUIT event means the user clicked X to close window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                Thrust=True
+            if check_box_active==False:
+                if event.key == pygame.K_UP:
+                    Thrust=True
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
+            if check_box_active==False: 
+                if event.key == pygame.K_UP:
+                    Thrust=False
+    if check_box_active==True:
+        if altitude<6000:
+            if velocity<-3:
+                Thrust=True
+            else:
                 Thrust=False
     if endheight==False:
         if Thrust==True:
@@ -196,13 +225,7 @@ while running:
              ly+=te
     
     
-    # each loop will get the mission data, used below
-    if endheight==False:
-        dataList = run_mission_increment(Thrust)
-        velocity = dataList[0]
-        thrustConstant = dataList[1]
-        altitude = dataList[2]
-        fuelRemaining = dataList[3]
+    
 
     # change Fuel to correspond to fuelRemaining
     Fuel = fuelRemaining
@@ -229,7 +252,7 @@ while running:
             screen.blit(Moon,(width+i,j))
         screen.blit(Moon,(i,height+j))
         screen.blit(Moon,(width+i,height+j))
-        j-=2
+        j-=4
     else:
         screen.blit(Moon,(i,j))
         screen.blit(Moon,(width+i,j))
@@ -274,7 +297,7 @@ while running:
             ly+=G
     if altitude<2000:
         if velocity<0:
-            if sy>ly+30:
+            if sy>ly+50:
                 sy-=2
     else:
         if sy<550:
