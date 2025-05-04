@@ -40,15 +40,6 @@ text_font4=pygame.font.SysFont("Arial",50,True)
 def draw_text(text,font,text_col,x,y):
     img = font.render(text,False,text_col)
     screen.blit(img,(x,y))
-#Moves the Percent sign to follow the number
-# def Percent_mover():
-#     if Fuel>=100:
-#         draw_text("%",text_font,(0,205,100),192,445)
-#     if Fuel<100 and Fuel>=10:
-#         draw_text("%",text_font,(0,205,100),177,445)
-#     if Fuel <10:
-#         draw_text("%",text_font,(0,205,100),164,445)
-#Lander Y direction
 ly=50
 #Gravity
 G=0.5
@@ -61,6 +52,7 @@ Thrust=False
 time_s=int(0)
 time_m=int(0)
 Fuel=int(100)
+endheight=False
 
 running = True
 
@@ -186,18 +178,20 @@ while running:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
                 Thrust=False
-    if Thrust==True:
-        if Fuel>0:
-            #Fuel-=0.05
-            ly-=0.75
+    if endheight==False:
+        if Thrust==True:
+            if Fuel>0:
+             #Fuel-=0.05
+                ly-=0.75
     
     
     # each loop will get the mission data, used below
-    dataList = run_mission_increment(Thrust)
-    velocity = dataList[0]
-    thrustConstant = dataList[1]
-    altitude = dataList[2]
-    fuelRemaining = dataList[3]
+    if endheight==False:
+        dataList = run_mission_increment(Thrust)
+        velocity = dataList[0]
+        thrustConstant = dataList[1]
+        altitude = dataList[2]
+        fuelRemaining = dataList[3]
 
     # change Fuel to correspond to fuelRemaining
     Fuel = fuelRemaining
@@ -207,7 +201,7 @@ while running:
     
     #Timer
     Frames+=1
-    if Frames==60:
+    if Frames==15:
         time_s+=1
         Frames=0
     if time_s==60:
@@ -233,13 +227,15 @@ while running:
     screen.blit(Moon,(i,height+j))
     screen.blit(Moon,(width+i,height+j))
     screen.blit(controller,(0,360))
-    if Thrust==True:
-        if Fuel > 0:
-            screen.blit(Fire,(805,ly+25))
+    if endheight==False:
+        if Thrust==True:
+            if Fuel > 0:
+                screen.blit(Fire,(805,ly+25))
     screen.blit(lander,(800,ly))
-    if event.type==pygame.KEYDOWN:
-        if event.type==pygame.K_SPACE:
-            ly+=2
+    if endheight==False:
+        if event.type==pygame.KEYDOWN:
+            if event.type==pygame.K_SPACE:
+                ly+=2
     #Display text
     draw_text("Time: ",text_font,(0,205,100),90,415)
     draw_text("Fuel: ",text_font,(0,205,100),90,445)
@@ -261,8 +257,10 @@ while running:
        j=0
        z=1
     i-=0.5
-    ly+=G
+    if endheight==False:
+        ly+=G
     if altitude<0:
+        endheight=True
         if velocity<-5:
             screen.blit(Kaboom,(800,ly))
             # time.sleep(5)
