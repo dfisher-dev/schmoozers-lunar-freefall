@@ -26,6 +26,10 @@ Moon=pygame.transform.scale(moon_img,(1280,720))
 #Lander 
 lander_img=pygame.image.load('The Lander.png')
 lander=pygame.transform.scale(lander_img,(200,200))
+#Lander Shadow
+shadow_img=pygame.image.load('Shadow.png')
+shadow=pygame.transform.scale(shadow_img,(300,300))
+sy=550
 #thruster Fire
 Fire_img=pygame.image.load('Fire.png')
 Fire=pygame.transform.scale(Fire_img,(200,200))
@@ -236,6 +240,7 @@ while running:
             if Fuel > 0:
                 screen.blit(Fire,(805,ly+25))
     screen.blit(lander,(800,ly))
+    screen.blit(shadow,(770,sy))
     #Display text
     draw_text("Time: ",text_font,(0,205,100),90,415)
     draw_text("Fuel: ",text_font,(0,205,100),90,445)
@@ -266,6 +271,13 @@ while running:
                 ly+=tv
         else:
             ly+=G
+    if altitude<2000:
+        if velocity<0:
+            if sy>ly+30:
+                sy-=2
+    else:
+        if sy<550:
+            sy+=2
     if altitude<0:
         endheight=True
         if velocity<-5:
