@@ -263,8 +263,8 @@ while running:
         if Thrust==True:
             if Fuel > 0:
                 screen.blit(Fire,(805,ly+25))
-    screen.blit(lander,(800,ly))
     screen.blit(shadow,(770,sy))
+    screen.blit(lander,(800,ly))
     #Display text
     draw_text("Time: ",text_font,(0,205,100),90,415)
     draw_text("Fuel: ",text_font,(0,205,100),90,445)
@@ -297,8 +297,10 @@ while running:
             ly+=G
     if altitude<2000:
         if velocity<0:
-            if sy>ly+50:
+            if sy>ly+20:
                 sy-=2
+            else:
+                sy=ly+20
     else:
         if sy<550:
             sy+=2
