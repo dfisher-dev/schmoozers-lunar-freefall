@@ -3,6 +3,7 @@ from database_connector import DatabaseConnector
 import math 
 import time 
 import os
+import backend_tables
 
 
 def display_initial_mission_data():
@@ -93,7 +94,8 @@ def create_new_mission(initial_height, initial_mass, initial_fuel):
   global altitude
   global fuelRemaining
   
-  
+  backend_tables.createTables()
+
   db = DatabaseConnector()
   db.connect()
  
@@ -184,7 +186,7 @@ def get_mission_data():
   print(result)
   
 
-# create_new_mission()  # Set lander mass from user input
+create_new_mission(1000, 1000, 1000)  # Set lander mass from user input
 # display_initial_mission_data()
 # run_mission_increment()
 # get_mission_data()
