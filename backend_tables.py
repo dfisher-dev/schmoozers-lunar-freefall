@@ -32,7 +32,6 @@ def createTables():
         time_stamp INT,
         velocity FLOAT,
         mass INT,
-        thrust_power INT,
         altitude FLOAT,
         fuel_remaining INT,
         FOREIGN KEY (mission_id) REFERENCES mission_start (mission_id)

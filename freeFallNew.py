@@ -1,7 +1,7 @@
 from database_connector import get_initial_mission_data
 from database_connector import DatabaseConnector
 import math 
-import time 
+from datetime import datetime
 import os
 import backend_tables
 
@@ -93,7 +93,10 @@ def create_new_mission(initial_height, initial_mass, initial_fuel):
   global landerMass
   global altitude
   global fuelRemaining
-  
+  global missionID
+
+  missionID = datetime.now()
+
   backend_tables.createTables()
 
   db = DatabaseConnector()
@@ -161,10 +164,10 @@ def run_mission_increment(engineIsOn):
   newUpdateStats()
 
   query = '''
-  INSERT INTO mission_data (time_stamp, altitude, fuel_remaining, mass, velocity, thrust_power)
+  INSERT INTO mission_data (time_stamp, mission_id, altitude, fuel_remaining, mass, velocity)
   VALUES (?, ?, ?, ?, ?, ?)'''
 
-  db.execute_query(query, (timeElapsed, altitude, fuelRemaining, landerMass, velocity, thrust))
+  db.execute_query(query, (timeElapsed, missionID, altitude, fuelRemaining, landerMass, velocity))
   db.commit()
   active_mission_data = db.fetchone()
   print(active_mission_data)
@@ -186,7 +189,7 @@ def get_mission_data():
   print(result)
   
 
-create_new_mission(1000, 1000, 1000)  # Set lander mass from user input
+# create_new_mission(1000, 1000, 1000)  # Set lander mass from user input
 # display_initial_mission_data()
 # run_mission_increment()
 # get_mission_data()
